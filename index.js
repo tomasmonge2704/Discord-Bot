@@ -1,21 +1,45 @@
 require('dotenv').config();
-const {Client,IntentsBitField} = require('discord.js');
+const Discord = require('discord.js');
 const { DisTube } = require("distube");
-const client = new Client ({
-    intents:[
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent,
-        IntentsBitField.Flags.GuildVoiceStates
-    ],
+const fs = require('fs')
+const client = new Discord.Client ({
+    intents: [
+        Discord.GatewayIntentBits.Guilds,
+        Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.GuildVoiceStates,
+        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.GuildMembers
+      ]
 });
-client.DisTube = new DisTube(client,{
+client.distube = new DisTube(client,{
     leaveOnStop: false,
   emitNewSongOnly: true,
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
 })
+client.commands = new Discord.Collection()
+client.aliases = new Discord.Collection()
+client.emotes = {
+    "play": "▶️",
+    "stop": "⏹️",
+    "queue": "📄",
+    "success": "☑️",
+    "repeat": "🔁",
+    "error": "❌"
+  }
+
+fs.readdir('./commands/', (err, files) => {
+  if (err) return console.log(err)
+  const jsFiles = files.filter(f => f.split('.').pop() === 'js')
+  if (jsFiles.length <= 0) return console.log('Could not find any commands!')
+  jsFiles.forEach(file => {
+    const cmd = require(`./commands/${file}`)
+    console.log(`Loaded ${file}`)
+    client.commands.set(cmd.name, cmd)
+    if (cmd.aliases) cmd.aliases.forEach(alias => client.aliases.set(alias, cmd.name))
+  })
+})
+
 client.on('ready',(c) => {
     console.log(`${c.user.tag} esta listo.`)
 })
@@ -31,33 +55,23 @@ client.on('interactionCreate', (interaction) => {
 client.on('messageCreate', message => {
     if(message.author.bot || !message.guild) return;
     const prefix = ""
+    if (!message.content.startsWith(prefix)) return
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
-
-    if(message.author.bot){
-        return;
+    const command = args.shift().toLowerCase()
+    const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command))
+    if (!cmd) return
+    if (cmd.inVoiceChannel && !message.member.voice.channel) {
+      return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
     }
-
-    if(args.shift().toLocaleLowerCase() === "play"){
-        client.DisTube.play(message.member.voice.channel, args.join(' '), {
-			message,
-			textChannel: message.channel,
-			member: message.member,
-            skip:true
-		})
-        .catch(err => {
-            message.reply(err.message);
-        });
-    }
-
-    if(message.content.includes("hola")){
-        message.reply('el de arriba es gay')
-    }
-    if(message.content == 'quien es el mejor del server en smite?'){
-        message.reply('en base a todas las partidas jugadas y analizando sus estadisticas puedo asegurarles que el gordo es gay.')
+    try {
+      cmd.run(client, message, args)
+    } catch (e) {
+      console.error(e)
+      message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
     }
 })
 
-client.DisTube.on("playSong", (queue,song) => {
+client.distube.on("playSong", (queue,song) => {
     queue.textChannel.send("Mira el temita que te puse papa: " + song.name)
 })
 client.login(process.env.TOKEN)
