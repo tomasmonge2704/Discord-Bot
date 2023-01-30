@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Discord = require('discord.js');
+const SmiteRandomGod = require('./SmiteRandomGod')
 const { DisTube } = require("distube");
 const fs = require('fs')
 const client = new Discord.Client ({
@@ -8,7 +9,8 @@ const client = new Discord.Client ({
         Discord.GatewayIntentBits.GuildMessages,
         Discord.GatewayIntentBits.GuildVoiceStates,
         Discord.GatewayIntentBits.MessageContent,
-        Discord.GatewayIntentBits.GuildMembers
+        Discord.GatewayIntentBits.GuildMembers,
+        Discord.GatewayIntentBits.GuildVoiceStates
       ]
 });
 client.distube = new DisTube(client,{
@@ -43,15 +45,22 @@ fs.readdir('./commands/', (err, files) => {
 client.on('ready',(c) => {
     console.log(`${c.user.tag} esta listo.`)
 })
-
 client.on('interactionCreate', (interaction) => {
     if(!interaction.isChatInputCommand()) return;
 
-    if(interaction.commandName === "hey"){
-        interaction.reply("hola puto")
+    if(interaction.commandName === "3v3"){
+        interaction.reply(SmiteRandomGod)
     }
 })
 
+client.on('voiceStateUpdate', (oldState, newState) => {
+  const cantidadDeUsuarios = JSON.parse(JSON.stringify(newState.guild.members.cache.filter(member => !member.user.bot))).length;
+  const channel = client.channels.cache.find(channel => channel.name === "general")
+  console.log(cantidadDeUsuarios)
+  if (newState.channelId == null && cantidadDeUsuarios == 1) {
+    channel.send(`el ultimo en irse fue el puto de ${oldState.member.user.username}`);
+  }
+});
 client.on('messageCreate', message => {
     if(message.author.bot || !message.guild) return;
     const prefix = ""

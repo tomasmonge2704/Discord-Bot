@@ -1,9 +1,14 @@
 require('dotenv').config();
-const { REST, Routes } = require('discord.js')
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord.js')
 const commands = [
     {
-        name:'hey',
-        description:'Replies with hey!',
+        name:'3v3',
+        description:'Random dioses smite',
+    },
+    {
+        name:'2v2',
+        description:'Random dioses smite',
     },
 ];
 
