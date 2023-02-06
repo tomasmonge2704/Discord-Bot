@@ -1,7 +1,9 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const SmiteRandomGod = require('./SmiteRandomGod')
+const GuildMember = new Discord.GuildMember(); // This shall be the command author.
+const {Random3v3,Random2v2} = require('./SmiteRandomGod')
 const { DisTube } = require("distube");
+const { SpotifyPlugin } = require("@distube/spotify");
 const fs = require('fs')
 const client = new Discord.Client ({
     intents: [
@@ -14,7 +16,8 @@ const client = new Discord.Client ({
       ]
 });
 client.distube = new DisTube(client,{
-    leaveOnStop: false,
+  plugins: [new SpotifyPlugin({emitEventsAfterFetching: true})],
+  leaveOnStop: false,
   emitNewSongOnly: true,
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
@@ -47,17 +50,36 @@ client.on('ready',(c) => {
 })
 client.on('interactionCreate', (interaction) => {
     if(!interaction.isChatInputCommand()) return;
-
+    if(interaction.commandName === "2v2"){
+      const user1 = interaction.options.get("user1").value;
+      const user2 = interaction.options.get("user2").value;
+      const user3 = interaction.options.get("user3").value;
+      const user4 = interaction.options.get("user4").value;
+      interaction.reply(Random2v2(user1,user2,user3,user4))
+    }
     if(interaction.commandName === "3v3"){
-        interaction.reply(SmiteRandomGod)
+      const user1 = interaction.options.get("user1").value;
+      const user2 = interaction.options.get("user2").value;
+      const user3 = interaction.options.get("user3").value;
+      const user4 = interaction.options.get("user4").value;
+      const user5 = interaction.options.get("user5").value;
+      const user6 = interaction.options.get("user6").value;
+      interaction.reply(Random3v3(user1,user2,user3,user4,user5,user6))
     }
 })
-
-client.on('voiceStateUpdate', (oldState, newState) => {
-  const cantidadDeUsuarios = JSON.parse(JSON.stringify(newState.guild.members.cache.filter(member => !member.user.bot))).length;
-  const channel = client.channels.cache.find(channel => channel.name === "general")
-  console.log(cantidadDeUsuarios)
-  if (newState.channelId == null && cantidadDeUsuarios == 1) {
+async function userCount(guildId, channelId) {
+  try {
+    let guild = client.guilds.cache.get(guildId);
+    let voiceChannel = await guild.channels.fetch(channelId, { force: true });
+    return voiceChannel.members.filter(member => !member.user.bot).size;
+  } catch (error) {
+    return 0
+  }
+}
+client.on('voiceStateUpdate', async (oldState, newState) => {
+  const channel = client.channels.cache.find(channel => channel.name === "xd")
+  const usuarios = await userCount(newState.guild.id,newState.channelId);
+  if (newState.channelId == null && usuarios == 0) {
     channel.send(`el ultimo en irse fue el puto de ${oldState.member.user.username}`);
   }
 });

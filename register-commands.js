@@ -1,14 +1,78 @@
 require('dotenv').config();
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord.js')
+const { Routes, ApplicationCommandOptionType } = require('discord.js')
 const commands = [
     {
         name:'3v3',
         description:'Random dioses smite',
+        options: [
+            {
+                name:"user1",
+                description:"User_ 1 del equipo 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user2",
+                description:"User_ 2 del equipo 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user3",
+                description:"User_ 3 del equipo 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user4",
+                description:"User_ 1 del equipo 2",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user5",
+                description:"User_ 1 del equipo 2",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user6",
+                description:"User_ 3 del equipo 2",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            }
+        ],
     },
     {
         name:'2v2',
         description:'Random dioses smite',
+        options: [
+            {
+                name:"user1",
+                description:"User_ 1 del equipo 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user2",
+                description:"User_ 2 del equipo 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user3",
+                description:"User_ 3 del equipo 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"user4",
+                description:"User_ 1 del equipo 2",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
     },
 ];
 
