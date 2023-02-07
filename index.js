@@ -1,6 +1,5 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const GuildMember = new Discord.GuildMember(); // This shall be the command author.
 const {Random3v3,Random2v2} = require('./SmiteRandomGod')
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
@@ -105,5 +104,5 @@ client.on('messageCreate', message => {
 client.distube.on("playSong", (queue,song) => {
     queue.textChannel.send("Mira el temita que te puse papa: " + song.name)
 })
-client.login(process.env.TOKEN)
+client.login("MTA2MzUwNTYzNDQ0OTk1Njg4NQ.GYDk6V.ZXPrL_x22RbyuBkQqIbeZJ3XQ039grC8SuXr28")
 
