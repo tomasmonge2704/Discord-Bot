@@ -149,7 +149,6 @@ const Fisico = [
     "DA JI",
     "Danzatuculo",
     "ERLANG SHEN",
-    "FAFNIR",
     "FENRIR",
     "Gilgamesh",
     "GUAN YU",
@@ -249,6 +248,7 @@ const Magico = [
     "YMIR",
     "Yemoya",
     "tio Juan",
+    "FAFNIR",
     "ZEUS",
     "ZHONG KUI"
 ]

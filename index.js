@@ -4,6 +4,7 @@ const {Random3v3,Random2v2} = require('./SmiteRandomGod')
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const fs = require('fs')
+const playAudio = require('./playAudio')
 const client = new Discord.Client ({
     intents: [
         Discord.GatewayIntentBits.Guilds,
@@ -31,7 +32,7 @@ client.emotes = {
     "repeat": "🔁",
     "error": "❌"
   }
-
+let ComandosDeAudio = []
 fs.readdir('./commands/', (err, files) => {
   if (err) return console.log(err)
   const jsFiles = files.filter(f => f.split('.').pop() === 'js')
@@ -41,6 +42,14 @@ fs.readdir('./commands/', (err, files) => {
     console.log(`Loaded ${file}`)
     client.commands.set(cmd.name, cmd)
     if (cmd.aliases) cmd.aliases.forEach(alias => client.aliases.set(alias, cmd.name))
+  })
+})
+fs.readdir('./audios/', (err, files) => {
+  if (err) return console.log(err)
+  const mp3Files = files.filter(f => f.split('.').pop() === 'mp3')
+  if (mp3Files.length <= 0) return console.log('Could not find any commands!')
+  mp3Files.forEach(file => {
+    ComandosDeAudio.push(file.substring(0, file.length - 4))
   })
 })
 
@@ -87,6 +96,14 @@ client.on('messageCreate', message => {
     const prefix = ""
     if (!message.content.startsWith(prefix)) return
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
+    if(message.content == "random"){
+      playAudio(ComandosDeAudio[Math.floor(Math.random()*ComandosDeAudio.length)],message)
+    }
+    ComandosDeAudio.forEach( audio => {
+      if (message.content === audio){
+        playAudio(audio,message)
+      }
+    })
     const command = args.shift().toLowerCase()
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command))
     if (!cmd) return
@@ -104,5 +121,5 @@ client.on('messageCreate', message => {
 client.distube.on("playSong", (queue,song) => {
     queue.textChannel.send("Mira el temita que te puse papa: " + song.name)
 })
-client.login(process.env.TOKEN)
+client.login("MTA2MzUwNTYzNDQ0OTk1Njg4NQ.G7HofQ.p1aOvPZJckouUuSmr5IZ7xa32JokBn17SnCm8o")
 
