@@ -121,5 +121,5 @@ client.on('messageCreate', message => {
 client.distube.on("playSong", (queue,song) => {
     queue.textChannel.send("Mira el temita que te puse papa: " + song.name)
 })
-client.login("MTA2MzUwNTYzNDQ0OTk1Njg4NQ.G7HofQ.p1aOvPZJckouUuSmr5IZ7xa32JokBn17SnCm8o")
+client.login(process.env.TOKEN)
 
