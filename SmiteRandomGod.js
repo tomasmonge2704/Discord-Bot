@@ -253,6 +253,10 @@ const Magico = [
     "ZHONG KUI"
 ]
 function SmiteRandomGod3v3(user1,user2,user3,user4,user5,user6) {
+    const usuarios1 = [user1,user2,user3]
+    const usuarios2 = [user4,user5,user6]
+    usuarios1.sort(() => Math.random() - 0.5);
+    usuarios2.sort(() => Math.random() - 0.5);
     const user1Pick = Fisico[Math.floor(Math.random()*Fisico.length)];
     const user2Pick = Magico[Math.floor(Math.random()*Magico.length)];
     let user3Pick = ListaEntera[Math.floor(Math.random()*ListaEntera.length)];
@@ -267,23 +271,48 @@ function SmiteRandomGod3v3(user1,user2,user3,user4,user5,user6) {
     }
    return `
    Equipo 1: 
-   -${user1}(${user1Pick})
-   -${user2}(${user2Pick})
-   -${user3}(${user3Pick})
+   -${usuarios1[0]}(${user1Pick})
+   -${usuarios1[1]}(${user2Pick})
+   -${usuarios1[2]}(${user3Pick})
 Equipo 2: 
-   -${user4}(${user4Pick})
-   -${user5}(${user5Pick})
-   -${user6}(${user6Pick})
+   -${usuarios2[0]}(${user4Pick})
+   -${usuarios2[1]}(${user5Pick})
+   -${usuarios2[2]}(${user6Pick})
    `
 }
+function SmiteConquest(user1,user2,user3,user4,user5){
+    return `
+    - Sup: (${user1}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Adc: (${user2}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Jungla: (${user3}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Mid: (${user4}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Solo: (${user5}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    `
+}
+function SmiteRandomConquest(user1,user2,user3,user4,user5){
+    const usuarios = [user1,user2,user3,user4,user5]
+    usuarios.sort(() => Math.random() - 0.5);
+    return `
+    - Sup: (${usuarios[0]}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Adc: (${usuarios[1]}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Jungla: (${usuarios[2]}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Mid: (${usuarios[3]}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    - Solo: (${usuarios[4]}) - ${ListaEntera[Math.floor(Math.random()*ListaEntera.length)]}
+    `
+}
+
 function SmiteRandomGod2v2(user1,user2,user3,user4) {
+    const usuarios1 = [user1,user2]
+    const usuarios2 = [user3,user4]
+    usuarios1.sort(() => Math.random() - 0.5);
+    usuarios2.sort(() => Math.random() - 0.5);
     return `
     Equipo 1: 
-    -${user1}(${Fisico[Math.floor(Math.random()*Fisico.length)]})
-    -${user2}(${Magico[Math.floor(Math.random()*Magico.length)]})
+    -${usuarios1[0]}(${Fisico[Math.floor(Math.random()*Fisico.length)]})
+    -${usuarios1[1]}(${Magico[Math.floor(Math.random()*Magico.length)]})
 Equipo 2: 
-    -${user3}(${Fisico[Math.floor(Math.random()*Fisico.length)]})
-    -${user4}(${Magico[Math.floor(Math.random()*Magico.length)]})
+    -${usuarios2[0]}(${Fisico[Math.floor(Math.random()*Fisico.length)]})
+    -${usuarios2[1]}(${Magico[Math.floor(Math.random()*Magico.length)]})
     `
  }
 function Random3v3(user1,user2,user3,user4,user5,user6) { 
@@ -293,4 +322,4 @@ function Random2v2(user1,user2,user3,user4) {
     return SmiteRandomGod2v2(user1,user2,user3,user4) 
 }
 
-module.exports = {Random3v3,Random2v2}
+module.exports = {Random3v3,Random2v2,SmiteConquest,SmiteRandomConquest}

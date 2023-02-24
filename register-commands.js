@@ -45,6 +45,78 @@ const commands = [
         ],
     },
     {
+        name:'conquest',
+        description:'Random dioses smite',
+        options: [
+            {
+                name:"sup",
+                description:"Supp",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"adc",
+                description:"Adc",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"jungla",
+                description:"Jungla",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"mid",
+                description:"Mid",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"solo",
+                description:"Solo",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            }
+        ],
+    },
+    {
+        name:'random_conquest',
+        description:'Random dioses smite',
+        options: [
+            {
+                name:"1",
+                description:"user 1",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"2",
+                description:"user 2",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"3",
+                description:"user 3",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"4",
+                description:"user 4",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name:"5",
+                description:"user 5",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            }
+        ],
+    },
+    {
         name:'2v2',
         description:'Random dioses smite',
         options: [

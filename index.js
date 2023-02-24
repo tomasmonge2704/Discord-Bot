@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const {Random3v3,Random2v2} = require('./SmiteRandomGod')
+const {Random3v3,Random2v2,SmiteConquest,SmiteRandomConquest} = require('./SmiteRandomGod')
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const fs = require('fs')
@@ -17,7 +17,7 @@ const client = new Discord.Client ({
 });
 client.distube = new DisTube(client,{
   plugins: [new SpotifyPlugin({emitEventsAfterFetching: true})],
-  leaveOnStop: false,
+  leaveOnStop: true,
   emitNewSongOnly: true,
   emitAddSongWhenCreatingQueue: false,
   emitAddListWhenCreatingQueue: false,
@@ -74,6 +74,22 @@ client.on('interactionCreate', (interaction) => {
       const user6 = interaction.options.get("user6").value;
       interaction.reply(Random3v3(user1,user2,user3,user4,user5,user6))
     }
+    if(interaction.commandName === "conquest"){
+      const user1 = interaction.options.get("sup").value;
+      const user2 = interaction.options.get("adc").value;
+      const user3 = interaction.options.get("jungla").value;
+      const user4 = interaction.options.get("mid").value;
+      const user5 = interaction.options.get("solo").value;
+      interaction.reply(SmiteRandomConquest(user1,user2,user3,user4,user5))
+    }
+    if(interaction.commandName === "randomConquest"){
+      const user1 = interaction.options.get("1").value;
+      const user2 = interaction.options.get("2").value;
+      const user3 = interaction.options.get("3").value;
+      const user4 = interaction.options.get("4").value;
+      const user5 = interaction.options.get("5").value;
+      interaction.reply(SmiteRandomConquest(user1,user2,user3,user4,user5))
+    }
 })
 async function userCount(guildId, channelId) {
   try {
@@ -99,8 +115,13 @@ client.on('messageCreate', message => {
     if(message.content == "random"){
       playAudio(ComandosDeAudio[Math.floor(Math.random()*ComandosDeAudio.length)],message)
     }
+
     ComandosDeAudio.forEach( audio => {
       if (message.content === audio){
+        const queue = client.distube.getQueue(message)
+        if(queue){
+          client.distube.voices.leave(message)
+        }
         playAudio(audio,message)
       }
     })

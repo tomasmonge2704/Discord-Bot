@@ -1,4 +1,4 @@
-const { joinVoiceChannel,createAudioPlayer,createAudioResource,getVoiceConnection } = require('@discordjs/voice');
+const { joinVoiceChannel,createAudioPlayer,createAudioResource } = require('@discordjs/voice');
 const { join } = require('path');
 
 module.exports = function playAudio(comando,message){
