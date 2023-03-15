@@ -122,9 +122,12 @@ const ListaEntera = [
     "Yemoya",
     "tio Juan",
     "ZEUS",
+    "Manticora",
     "ZHONG KUI"
+
 ]
 const Fisico = [
+    "Manticora",
     "Surtr",
     "AH MUZEN CAB",
     "AMATERASU",
